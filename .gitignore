@@ -1,0 +1,3 @@
+contracts/client/target/
+contracts/oracle/target/
+contracts/fungible-token/target/
