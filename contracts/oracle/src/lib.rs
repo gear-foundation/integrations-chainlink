@@ -6,8 +6,10 @@ use gstd::{exec, msg, prelude::*, ActorId};
 use primitive_types::H256;
 pub mod ft_messages;
 use ft_messages::transfer_tokens;
+use scale_info::TypeInfo;
+use codec::{Encode};
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, TypeInfo, Encode)]
 pub struct Oracle {
     pub owner: ActorId,
     pub link_token: ActorId,
@@ -146,4 +148,13 @@ pub unsafe extern "C" fn meta_state() -> *mut [i32; 2] {
     let oracle: &mut Oracle = ORACLE.get_or_insert(Oracle::default());
     let encoded = oracle.requests.encode();
     gstd::util::to_leak_ptr(encoded)
+}
+
+
+gstd::metadata! {
+    title: "Oracle",
+    init:
+        input: InitOracle,
+    state:
+        output: Oracle,
 }

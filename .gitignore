@@ -1,3 +1,4 @@
-contracts/client/target/
-contracts/oracle/target/
-contracts/fungible-token/target/
+**/target/
+**/.env
+**/node_modules/
+**/.DS_Store
