@@ -1,6 +1,20 @@
 {
   "name": "initiator",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "main": "bin/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "ts-node-dev src/index.ts"
+  },
+  "dependencies": {
+    "@gear-js/api": "^0.15.1",
+    "@polkadot/api": "^7.13.1",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "typescript": "^4.6.2"
+  }
 }
