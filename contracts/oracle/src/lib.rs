@@ -2,7 +2,7 @@
 
 use oracle_io::*;
 use client_io::*;
-use gstd::{exec, msg, prelude::*, ActorId};
+use gstd::{exec, debug,msg, prelude::*, ActorId};
 use primitive_types::H256;
 pub mod ft_messages;
 use ft_messages::transfer_tokens;
@@ -19,7 +19,7 @@ pub struct Oracle {
 
 static mut ORACLE: Option<Oracle> = None;
 const EXPIRY_TIME: u64 = 5 * 60 * 1_000_000_000;
-pub type AccountAndRequestId = String;
+
 impl Oracle {
     /// Receives a request from a client contract and puts it to the oracle state
     /// Arguments:
@@ -37,6 +37,7 @@ impl Oracle {
         transfer_tokens(&self.link_token, &msg::source(), &exec::program_id(), payment).await;
         self.requests.insert(account_and_request_id, OracleRequest {
             caller: msg::source(),
+            id: request_id,
             job_id: job_id.clone(),
             callback_address,
             data: data.clone(),
@@ -60,17 +61,15 @@ impl Oracle {
     /// * `account`: the client address
     /// * `request_id`: the fulfillment request ID that must match the account
     /// * `data`: the data to return to the consuming client contract
-    async fn fullfill_request(&mut self, account: ActorId, request_id: u128, data: String) {
+    async fn fullfill_request(&mut self, request_key: AccountAndRequestId, data: String) {
         self.check_external_adapter();
-        let account_and_request_id =
-            format!("{}{}", H256::from_slice(account.as_ref()), request_id);
-
-        let request =  self.requests.remove(&account_and_request_id).expect("That request doesn't exist");
+    
+        let request =  self.requests.remove(&request_key).expect("That request doesn't exist");
 
         let _client_response: ClientEvent = msg::send_and_wait_for_reply(
                 request.callback_address,
                 ClientAction::OracleAnswer{
-                    request_id,
+                    request_id: request.id,
                     data,
                 },
                 0,
@@ -79,8 +78,8 @@ impl Oracle {
             .expect("Error in sending answer to client");
         msg::reply(
             OracleEvent::RequestFulfilled {
-                account,
-                request_id,
+                account: request.caller,
+                request_id: request.id,
             },
             0
         );
@@ -137,8 +136,8 @@ async fn main() {
             oracle.request(payment, job_id, callback_address, request_id, data).await;
         },
         OracleAction::FullfillRequest {
-           account, request_id, data
-        } => oracle.fullfill_request(account, request_id, data).await,
+           request_key, data
+        } => oracle.fullfill_request(request_key, data).await,
         OracleAction::CancelRequest {account, request_id} => oracle.cancel_request(&account, request_id).await
     }
 }

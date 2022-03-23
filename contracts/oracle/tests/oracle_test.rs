@@ -4,6 +4,7 @@ use gstd::prelude::*;
 use oracle_io::*;
 use ft_io::*;
 use client_io::*;
+use primitive_types::H256;
 const CLIENT_CONTRACT: u64 = 2;
 const EXTERNAL_ADAPTER: u64 = 4;
 const USER: u64 = 5;
@@ -103,6 +104,7 @@ fn make_request() {
 #[test]
 fn make_request_through_client_contract() {
     let sys = System::new();
+    sys.init_logger();
     init_fungible_token(&sys);
     init_client(&sys);
     init_oracle(&sys);
@@ -110,6 +112,7 @@ fn make_request_through_client_contract() {
     let client = sys.get_program(2);
     let oracle = sys.get_program(3);
     // user sends tokens to client contract
+   
     let res = ft.send(
         USER,
         Action::Transfer {
@@ -118,6 +121,7 @@ fn make_request_through_client_contract() {
             amount: 1000,
         }
     );
+
     assert!(!res.main_failed());
     // user make request through client contract
     // client contract calls oracle
@@ -125,6 +129,7 @@ fn make_request_through_client_contract() {
         USER,
         ClientAction::MakeRequest("Rain".to_string())
     );
+
     assert!(res.contains(&(
         USER,
         ClientEvent::RequestMade {
@@ -136,14 +141,19 @@ fn make_request_through_client_contract() {
 
     // External adapter returns answer from the chainlink node
     // Oracle calls client and sends received data
+    let mut acc: [u8; 32] = [0; 32];
+    acc[0] = 2;
+    let account_and_request_id: String =
+    format!("{}{}", H256::from_slice(&acc),0 as u128);
+
     let res = oracle.send(
         EXTERNAL_ADAPTER,
         OracleAction::FullfillRequest{
-            account: CLIENT_CONTRACT.into(),
-            request_id: 0,
+            request_key: account_and_request_id,
             data: "AnswerFromChainlink".to_string(),
         }
     );
+    println!("b");
     assert!(res.contains(&(
         EXTERNAL_ADAPTER,
         OracleEvent::RequestFulfilled  {

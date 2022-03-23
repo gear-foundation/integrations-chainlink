@@ -2,6 +2,7 @@
 use gstd::{ActorId, String};
 use scale_info::TypeInfo;
 use codec::{Decode, Encode};
+pub type AccountAndRequestId = String;
 
 #[derive(Debug, Decode, Encode, TypeInfo)]
 pub struct InitOracle {
@@ -13,6 +14,7 @@ pub struct InitOracle {
 #[derive(Debug, Decode, Encode, TypeInfo)]
 pub struct OracleRequest {
     pub caller: ActorId,
+    pub id: u128,
     pub job_id: String,
     pub callback_address: ActorId,
     pub data: String,
@@ -30,8 +32,7 @@ pub enum OracleAction {
         data: String,
     },
     FullfillRequest {
-        account: ActorId,
-        request_id: u128,
+        request_key: AccountAndRequestId,
         data: String,
     },
     CancelRequest{
