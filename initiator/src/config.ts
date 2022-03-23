@@ -19,7 +19,8 @@ export default {
     url: checkEnv('CL_URL'),
     inAccessKey: checkEnv('CL_IN_ACCESS_KEY'),
     inSecret: checkEnv('CL_IN_SECRET'),
-    outAccessKey: checkEnv('CL_OUT_ACCESS_KEY'),
-    outSecret: checkEnv('CL_OUT_SECRET'),
+    // outAccessKey: checkEnv('CL_OUT_ACCESS_KEY'),
+    // outSecret: checkEnv('CL_OUT_SECRET'),
   },
+  timeout: 10000,
 };
