@@ -7,7 +7,10 @@ import { AdapterServer } from './server';
 const main = async () => {
   const api = await GearApi.create({ providerAddress: config.gear.ws });
   const meta = await getWasmMetadata(readFileSync(config.oracle.pathToMeta));
-  const account = await GearKeyring.fromSeed(config.gear.acoountSeed);
+  const account =
+    config.gear.acoountSeed === 'Alice'
+      ? await GearKeyring.fromSuri('//Alice')
+      : await GearKeyring.fromSeed(config.gear.acoountSeed);
   const gear = new Gear(api, meta, account);
   const server = new AdapterServer(gear);
   server.run();
