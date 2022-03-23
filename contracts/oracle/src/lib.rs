@@ -34,7 +34,7 @@ impl Oracle {
         if self.requests.contains_key(&account_and_request_id) {
             panic!("Existing account and reqiest id in requests");
         }
-        transfer_tokens(&self.link_token, &msg::source(), &exec::program_id(), payment).await;
+   //     transfer_tokens(&self.link_token, &msg::source(), &exec::program_id(), payment).await;
         self.requests.insert(account_and_request_id, OracleRequest {
             caller: msg::source(),
             id: request_id,
@@ -157,5 +157,5 @@ gstd::metadata! {
     handle: 
         input: OracleAction,
     state:
-        output: Oracle,
+        output: BTreeMap<AccountAndRequestId, OracleRequest>,
 }
