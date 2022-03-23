@@ -154,6 +154,8 @@ gstd::metadata! {
     title: "Oracle",
     init:
         input: InitOracle,
+    handle: 
+        input: OracleAction,
     state:
         output: Oracle,
 }
