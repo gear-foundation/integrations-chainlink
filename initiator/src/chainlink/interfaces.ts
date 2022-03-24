@@ -1,5 +1,5 @@
 export interface IRequest {
   jobId: string;
   data: string;
-  requestKey: string;
+  request_key: string;
 }

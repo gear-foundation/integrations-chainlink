@@ -2,7 +2,7 @@ import axios from 'axios';
 import config from '../config';
 import { IRequest } from './interfaces';
 
-export async function makeRequest({ jobId, data, requestKey }: IRequest): Promise<any> {
+export async function makeRequest({ jobId, data, request_key }: IRequest): Promise<any> {
   const uri = `${config.chainlink.url}/v2/jobs/${jobId}/runs`;
   const headers = {
     'Content-Type': 'application/json',
@@ -10,8 +10,8 @@ export async function makeRequest({ jobId, data, requestKey }: IRequest): Promis
     'X-Chainlink-EA-Secret': config.chainlink.inSecret,
   };
   console.log('*** sendRequest ***');
-  console.log({ ...JSON.parse(data), requestKey });
-  const response = await axios.post(uri, JSON.stringify({ ...JSON.parse(data), requestKey }), { headers });
+  console.log({ ...JSON.parse(data), request_key });
+  const response = await axios.post(uri, JSON.stringify({ ...JSON.parse(data), request_key }), { headers });
   return response.data;
 }
 

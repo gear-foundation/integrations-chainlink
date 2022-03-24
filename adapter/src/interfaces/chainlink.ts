@@ -1,4 +1,4 @@
 export interface CLData {
-  requestKey: string;
+  request_key: string;
   data: any;
 }

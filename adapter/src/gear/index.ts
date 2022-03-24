@@ -1,4 +1,4 @@
-import { GearApi, Metadata } from '@gear-js/api';
+import { CreateType, GearApi, Metadata } from '@gear-js/api';
 import { KeyringPair } from '@polkadot/keyring/types';
 import config from '../config';
 import { CLData } from '../interfaces';
@@ -19,8 +19,15 @@ export class Gear {
   }
 
   async submitData(data: CLData, callback: (err?: string, ok?: string) => void) {
+    const payload = {
+      FullfillRequest: {
+        request_key: data.request_key,
+        data: JSON.stringify(data.data),
+      },
+    };
+    console.log(CreateType.create(this.meta.handle_input as string, payload, this.meta).toHuman());
     try {
-      this.api.message.submit({ destination: this.oracle, gasLimit: this.gas, payload: data }, this.meta);
+      this.api.message.submit({ destination: this.oracle, gasLimit: this.gas, payload }, this.meta);
     } catch (error: any) {
       console.log(error);
       callback(`Unable to submit message. Reason: ${error.message}`);
