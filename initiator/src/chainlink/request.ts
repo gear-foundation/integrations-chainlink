@@ -9,13 +9,16 @@ export async function makeRequest({ jobId, data, requestKey }: IRequest): Promis
     'X-Chainlink-EA-AccessKey': config.chainlink.inAccessKey,
     'X-Chainlink-EA-Secret': config.chainlink.inSecret,
   };
-  const response = await axios.post(uri, { ...JSON.parse(data), requestKey }, { headers });
+  console.log('*** sendRequest ***');
+  console.log({ ...JSON.parse(data), requestKey });
+  const response = await axios.post(uri, JSON.stringify({ ...JSON.parse(data), requestKey }), { headers });
   return response.data;
 }
 
 export async function sendRequests(requests: IRequest[]) {
   for (let request of requests) {
-    const responseData = makeRequest(request);
+    const responseData = await makeRequest(request);
+    console.log('*** response ***');
     console.log(responseData);
   }
 }

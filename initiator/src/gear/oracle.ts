@@ -33,9 +33,9 @@ export class GearOracle {
     if (stateRequests.size === 0) {
       return null;
     }
-    const result: any = [];
+    const result: IRequest[] = [];
     stateRequests.forEach((value, key) => {
-      result.push({ jobId: value.jobId.toString(), data: value.data.toString(), accountAndRequestId: key.toString() });
+      result.push({ jobId: value.jobId.toString(), data: value.data.toString(), requestKey: key.toString() });
     });
 
     return result;
