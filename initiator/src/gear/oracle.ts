@@ -23,13 +23,11 @@ export class GearOracle {
   }
 
   async readState(): Promise<BTreeMap<AccountAndRequestId, OracleRequest>> {
-    console.log('*** readState ***');
     const state = await this.api.programState.read(this.oracleAddress, this.metaWasm);
     return state as BTreeMap<AccountAndRequestId, OracleRequest>;
   }
 
   getRequests(stateRequests: BTreeMap<AccountAndRequestId, OracleRequest>): IRequest[] | null {
-    console.log(stateRequests.toHuman());
     if (stateRequests.size === 0) {
       return null;
     }

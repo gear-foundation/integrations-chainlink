@@ -18,14 +18,17 @@ export class Gear {
     this.account = account;
   }
 
-  async submitData(data: CLData, callback: (err?: string, ok?: string) => void) {
+  async submitData({ request_key, data }: CLData = {}, callback: (err?: string, ok?: string) => void) {
+    if (!data) {
+      callback('Result data not found');
+      return;
+    }
     const payload = {
       FullfillRequest: {
-        request_key: data.request_key,
-        data: JSON.stringify(data.data),
+        request_key: request_key,
+        data: typeof data === 'string' ? data : JSON.stringify(data),
       },
     };
-    console.log(CreateType.create(this.meta.handle_input as string, payload, this.meta).toHuman());
     try {
       this.api.message.submit({ destination: this.oracle, gasLimit: this.gas, payload }, this.meta);
     } catch (error: any) {
@@ -34,12 +37,12 @@ export class Gear {
     }
 
     try {
-      await this.api.message.signAndSend(this.account, ({ events }) => {
+      await this.api.message.signAndSend(this.account, ({ events, status }) => {
         events.forEach(({ event }) => {
           if (this.api.events.system.ExtrinsicFailed.is(event)) {
-            callback('extrinsic failed');
+            status.isInBlock && callback('extrinsic failed');
           } else if (this.api.events.system.ExtrinsicSuccess.is(event)) {
-            callback(undefined, 'success');
+            status.isFinalized && callback(undefined, 'success');
           }
         });
       });
