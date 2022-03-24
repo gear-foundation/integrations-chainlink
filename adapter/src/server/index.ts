@@ -18,10 +18,12 @@ export class AdapterServer {
       console.log(req.body);
       await this.gearApi.submitData(req.body, (err, ok) => {
         if (err) {
-          res.status(500).json({ error: err });
+          res.statusCode = 500;
+          res.json({ error: err });
           return;
         } else {
-          res.status(200).json({ result: ok });
+          res.statusCode = 200;
+          res.json({ result: ok });
           return;
         }
       });

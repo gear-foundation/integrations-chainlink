@@ -22,6 +22,7 @@ export class Gear {
     try {
       this.api.message.submit({ destination: this.oracle, gasLimit: this.gas, payload: data }, this.meta);
     } catch (error: any) {
+      console.log(error);
       callback(`Unable to submit message. Reason: ${error.message}`);
     }
 
@@ -36,6 +37,7 @@ export class Gear {
         });
       });
     } catch (error: any) {
+      console.log(error);
       callback(`Unable to send message. Reason: ${error.message}`);
     }
   }
