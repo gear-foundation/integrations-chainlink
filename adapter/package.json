@@ -9,7 +9,7 @@
     "start": "node build/index.js"
   },
   "dependencies": {
-    "@gear-js/api": "^0.14.4",
+    "@gear-js/api": "^0.15.2",
     "@polkadot/api": "^7.12.1",
     "@types/express": "^4.17.13",
     "dotenv": "^16.0.0",
