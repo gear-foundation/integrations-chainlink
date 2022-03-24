@@ -14,11 +14,11 @@ const sleep = () => {
 
 const main = async () => {
   const oracle = new GearOracle(config.gear.oracle as Hex, readFileSync(config.gear.pathToMeta));
-  oracle.init(config.gear.ws);
-
+  await oracle.init(config.gear.ws);
+  console.log(`App is running`);
   while (true) {
     const state = await oracle.readState();
-    const requests = oracle.getRequests(state.requests);
+    const requests = oracle.getRequests(state);
     if (requests !== null) {
       sendRequests(requests);
     }

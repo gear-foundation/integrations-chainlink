@@ -11,7 +11,7 @@ config();
 
 export default {
   server: {
-    port: process.env.CL_ADAPTER_PORT || 3000,
+    port: parseInt(process.env.CL_ADAPTER_PORT || '3000'),
   },
   oracle: {
     address: checkEnv('ORACLE_ADDRESS'),

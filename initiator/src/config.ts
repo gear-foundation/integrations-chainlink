@@ -22,5 +22,5 @@ export default {
     // outAccessKey: checkEnv('CL_OUT_ACCESS_KEY'),
     // outSecret: checkEnv('CL_OUT_SECRET'),
   },
-  timeout: 10000,
+  timeout: parseInt(process.env.READ_STATE_TIMEOUT || '10000'),
 };

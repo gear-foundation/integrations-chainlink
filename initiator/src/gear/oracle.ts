@@ -15,21 +15,27 @@ export class GearOracle {
   }
 
   async init(wsProviderAddress: string) {
-    this.api = await GearApi.create({ providerAddress: wsProviderAddress });
+    this.api = await GearApi.create({
+      providerAddress: wsProviderAddress,
+      customTypes: { AccountAndRequestId: 'String' },
+    });
     this.meta = await getWasmMetadata(this.metaWasm);
   }
 
-  async readState(): Promise<OracleState> {
-    return (await this.api.programState.read(this.oracleAddress, this.metaWasm)) as OracleState;
+  async readState(): Promise<BTreeMap<AccountAndRequestId, OracleRequest>> {
+    console.log('*** readState ***');
+    const state = await this.api.programState.read(this.oracleAddress, this.metaWasm);
+    return state as BTreeMap<AccountAndRequestId, OracleRequest>;
   }
 
   getRequests(stateRequests: BTreeMap<AccountAndRequestId, OracleRequest>): IRequest[] | null {
+    console.log(stateRequests.toHuman());
     if (stateRequests.size === 0) {
       return null;
     }
     const result: any = [];
     stateRequests.forEach((value, key) => {
-      result.push({ jobId: value.job_id.toString(), data: value.data.toString(), accountAndRequestId: key.toString() });
+      result.push({ jobId: value.jobId.toString(), data: value.data.toString(), accountAndRequestId: key.toString() });
     });
 
     return result;

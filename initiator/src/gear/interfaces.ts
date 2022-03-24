@@ -5,7 +5,7 @@ export interface AccountAndRequestId extends Type {}
 
 export interface OracleRequest extends Codec {
   caller: Type;
-  job_id: String;
+  jobId: String;
   callback_address: Type;
   data: String;
   payment: u128;

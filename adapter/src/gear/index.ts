@@ -18,10 +18,25 @@ export class Gear {
     this.account = account;
   }
 
-  submitData(data: CLData) {
-    this.api.message.submit({ destination: this.oracle, gasLimit: this.gas, payload: data }, this.meta);
-    this.api.message.signAndSend(this.account, (events) => {
-      console.log(events.toHuman());
-    });
+  async submitData(data: CLData, callback: (err?: string, ok?: string) => void) {
+    try {
+      this.api.message.submit({ destination: this.oracle, gasLimit: this.gas, payload: data }, this.meta);
+    } catch (error: any) {
+      callback(`Unable to submit message. Reason: ${error.message}`);
+    }
+
+    try {
+      await this.api.message.signAndSend(this.account, ({ events }) => {
+        events.forEach(({ event }) => {
+          if (this.api.events.system.ExtrinsicFailed.is(event)) {
+            callback('extrinsic failed');
+          } else if (this.api.events.system.ExtrinsicSuccess.is(event)) {
+            callback(undefined, 'success');
+          }
+        });
+      });
+    } catch (error: any) {
+      callback(`Unable to send message. Reason: ${error.message}`);
+    }
   }
 }
