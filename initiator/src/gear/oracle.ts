@@ -17,7 +17,7 @@ export class GearOracle {
   async init(wsProviderAddress: string) {
     this.api = await GearApi.create({
       providerAddress: wsProviderAddress,
-      customTypes: { AccountAndRequestId: 'String' },
+      types: { AccountAndRequestId: 'String' },
     });
     this.meta = await getWasmMetadata(this.metaWasm);
   }

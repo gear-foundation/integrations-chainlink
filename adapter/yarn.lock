@@ -21,10 +21,10 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@gear-js/api@^0.14.4":
-  version "0.14.4"
-  resolved "https://registry.yarnpkg.com/@gear-js/api/-/api-0.14.4.tgz#fa61c1bac0924f25385ae4cd034f75cf823d5291"
-  integrity sha512-YYPDpw5FnbGXO+yqtL5tE5cKZvWpCNx0Ga3Hoiw048xKv9UwaGzJ+ZRU0u6YG+Kd8H2z4tEV8ngqblB+/zNu7g==
+"@gear-js/api@^0.15.2":
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/@gear-js/api/-/api-0.15.2.tgz#8d87e1593c49e6b975681dac82ba6faadb0c6337"
+  integrity sha512-YnTc0SRoDYu3CK1LaJlGTrIsoCMVg6m3PO1vXmgFBUnWRG+DWA7kz9Enrp3w4Cz2nGFCOGM9d/vGIvvGdnM7ug==
 
 "@noble/hashes@1.0.0":
   version "1.0.0"
