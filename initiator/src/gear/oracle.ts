@@ -52,7 +52,7 @@ export class GearOracle {
       });
       return result;
     };
-    const payload = { FullfullRequests: fullfill() };
+    const payload = { FullfillRequests: fullfill() };
     try {
       this.api.message.submit({ destination: this.oracleAddress, gasLimit: this.gas, payload }, this.meta);
     } catch (error: any) {
