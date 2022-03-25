@@ -10,12 +10,13 @@ export async function makeRequest({ jobId, data, request_key }: IRequest): Promi
     'X-Chainlink-EA-Secret': config.chainlink.inSecret,
   };
   const response = await axios.post(uri, JSON.parse(data), { headers });
-  return { request_key, data: response.data };
+  return { request_key, data: response.data.data };
 }
 
 export async function sendRequests(requests: IRequest[]): Promise<FullfillRequestData[]> {
   const responses = await Promise.all(requests.map(makeRequest));
-  console.log(responses);
+  console.log('*** response ***');
+  console.log(JSON.stringify(responses, undefined, 4));
   return responses.map(handleResponse);
 }
 
