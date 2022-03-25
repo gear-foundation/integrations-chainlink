@@ -20,12 +20,17 @@ export async function sendRequests(requests: IRequest[]): Promise<FullfillReques
   return responses.map(handleResponse);
 }
 
-export function handleResponse({ data, request_key }: IMakeRequestResult): FullfillRequestData {
+export function handleResponse({
+  data: {
+    attributes: { outputs, errors },
+  },
+  request_key,
+}: IMakeRequestResult): FullfillRequestData {
   const result: FullfillRequestData = { request_key };
-  if (data.outputs) {
-    result['data'] = JSON.stringify({ data: data.outputs });
-  } else if (data.errors) {
-    result['error'] = data.errors.join('&&');
+  if (outputs) {
+    result['data'] = JSON.stringify({ data: outputs });
+  } else if (errors) {
+    result['error'] = errors.join('&&');
   } else {
     result['error'] = 'Unknown error';
   }

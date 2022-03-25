@@ -22,5 +22,9 @@ export interface IResponseData {
 
 export interface IMakeRequestResult {
   request_key: string;
-  data: IResponseData;
+  data: {
+    type: string;
+    id: string | number;
+    attributes: IResponseData;
+  };
 }
