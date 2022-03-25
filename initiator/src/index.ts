@@ -13,14 +13,15 @@ const sleep = () => {
 };
 
 const main = async () => {
-  const oracle = new GearOracle(config.gear.oracle as Hex, readFileSync(config.gear.pathToMeta));
-  await oracle.init(config.gear.ws);
-  console.log(`App is running`);
+  const oracle = new GearOracle(config.gear.oracle as Hex, readFileSync(config.gear.pathToMeta), config.gear.gas);
+  await oracle.init(config.gear.ws, config.gear.acoountSeed);
+  console.log(`🚀 App is running`);
   while (true) {
     const state = await oracle.readState();
     const requests = oracle.getRequests(state);
     if (requests !== null) {
-      sendRequests(requests);
+      const responses = await sendRequests(requests);
+      console.log(responses);
     }
     await sleep();
   }
