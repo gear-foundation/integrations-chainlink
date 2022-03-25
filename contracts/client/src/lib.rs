@@ -29,8 +29,7 @@ impl Client {
         self.requests.insert(self.request_id, ClientRequest {
             job_id: job_id.clone(),
             data_requested: data.clone(),
-            data_answer: String::new(),
-            fulfilled: false,
+            ..ClientRequest::default()
         });
         // approve oracle contract to spend tokens
         let _approve_response: Event = msg::send_and_wait_for_reply(
@@ -74,20 +73,24 @@ impl Client {
     /// Arguments:
     /// * `request_id`: the fulfillment request ID
     /// * `data`: the data answer
-    fn oracle_answer(&mut self, request_id: u128, data: String) {
+    fn oracle_answer(&mut self, request_id: u128, data: Result<String, String>) {
         self.check_oracle_id();
+
+        let success = if  data.is_ok() {
+            true
+        } else { false };
+
+        let data_answer = if  data.is_ok() {
+            data.unwrap()
+        } else { String::new() };
+
         self.requests.entry(request_id)
-                    .and_modify(|r| {
-                        r.data_answer = data.clone();
-                        r.fulfilled = true;
-                     });
-        msg::reply(
-            ClientEvent::RequestFulfilled {
-                request_id,
-                data_answer: data,
-            },
-            0
-        );
+            .and_modify(|r| {
+                r.data_answer = data_answer;
+                r.fulfilled = true;
+                r.success = success;
+            });
+        
     }
 
     fn check_oracle_id(&self) {
