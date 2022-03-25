@@ -1,0 +1,23 @@
+name = "dot_usd"
+type = "webhook"
+schemaVersion = 1
+
+externalInitiators = [
+  { name = "linktest", spec = "{}" },
+]
+
+observationSource = """
+parse_request    [type="jsonparse" path="value" data="$(jobRun.requestBody)"]
+coingecko        [type="http"
+                  method=GET
+                  url="https://api.coingecko.com/api/v3/exchange_rates"]
+get_dot          [type="jsonparse" path="rates,dot,value" data="$(coingecko)"]
+get_usd          [type="jsonparse" path="rates,usd,value" data="$(coingecko)"]
+divide           [type="divide"
+                  input="$(get_usd)"
+                  divisor="$(get_dot)"
+                  precision="2"]
+multiply         [type="multiply" input="$(divide)" times="$(parse_request)"]
+
+parse_request -> coingecko -> get_dot -> get_usd -> divide -> multiply
+"""
