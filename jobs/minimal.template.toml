@@ -1,5 +1,5 @@
-name          = "job_template"
-type          = "webhook"
+name = "minimal"
+type = "webhook"
 schemaVersion = 1
 
 externalInitiators = [
@@ -10,5 +10,5 @@ observationSource = """
 parse_request    [type="jsonparse" path="data" data="$(jobRun.requestBody)"]
 multiply         [type="multiply" input="$(parse_request)" times="100"]
 
-parse_request -> multiply ->
+parse_request -> multiply
 """
