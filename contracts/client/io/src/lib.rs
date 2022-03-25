@@ -15,8 +15,9 @@ pub struct InitClient {
 pub struct ClientRequest {
     pub job_id: String,
     pub data_requested: String,
-    pub data_answer: String,
+    pub data_answer:String,
     pub fulfilled: bool,
+    pub success: bool,
 }
 
 #[derive(Debug, Decode, Encode, TypeInfo)]
@@ -24,7 +25,7 @@ pub enum ClientAction {
     MakeRequest(String),
     OracleAnswer {
         request_id: u128,
-        data: String,
+        data: Result<String,String>,
     },
     Request(u128),
 
@@ -36,7 +37,7 @@ pub enum ClientEvent {
         job_id: String,
         data: String,
     },
-    RequestFulfilled{
+    RequestsFulfilled{
         request_id: u128,
         data_answer: String,
     },

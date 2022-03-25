@@ -1,5 +1,5 @@
 #![no_std]
-use gstd::{ActorId, String};
+use gstd::{ActorId, prelude::*, String};
 use scale_info::TypeInfo;
 use codec::{Decode, Encode};
 pub type AccountAndRequestId = String;
@@ -31,10 +31,7 @@ pub enum OracleAction {
         request_id: u128,
         data: String,
     },
-    FullfillRequest {
-        request_key: AccountAndRequestId,
-        data: String,
-    },
+    FullfillRequests(BTreeMap<AccountAndRequestId, Result<String, String>>),
     CancelRequest{
         account: ActorId,
         request_id: u128,
@@ -48,10 +45,7 @@ pub enum OracleEvent {
         caller: ActorId,
         data: String,
     },
-    RequestFulfilled {
-        account: ActorId,
-        request_id: u128,
-    },
+    RequestsFulfilled(BTreeMap<AccountAndRequestId, Result<String, String>>),
     RequestCancelled {
         account: ActorId,
         request_id: u128,
