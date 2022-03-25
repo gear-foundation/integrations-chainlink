@@ -21,7 +21,7 @@ const main = async () => {
     const requests = oracle.getRequests(state);
     if (requests !== null) {
       const responses = await sendRequests(requests);
-      console.log(responses);
+      await oracle.submitData(responses);
     }
     await sleep();
   }
