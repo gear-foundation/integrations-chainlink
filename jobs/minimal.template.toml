@@ -1,0 +1,14 @@
+name = "minimal"
+type = "webhook"
+schemaVersion = 1
+
+externalInitiators = [
+  { name = "linktest", spec = "{}" },
+]
+
+observationSource = """
+parse_request    [type="jsonparse" path="data" data="$(jobRun.requestBody)"]
+multiply         [type="multiply" input="$(parse_request)" times="100"]
+
+parse_request -> multiply
+"""
