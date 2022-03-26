@@ -18,3 +18,9 @@ export interface OracleState extends Codec {
   external_adapter: Type;
   requests: BTreeMap<AccountAndRequestId, OracleRequest>;
 }
+
+export interface FullfillRequestData {
+  request_key: string;
+  data?: string;
+  error?: string;
+}

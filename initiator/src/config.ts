@@ -13,7 +13,9 @@ export default {
   gear: {
     ws: process.env.GEAR_WS_ADDRESS || 'ws://localhost:9944',
     oracle: checkEnv('ORACLE_ADDRESS'),
+    gas: checkEnv('ORACLE_GAS_LIMIT'),
     pathToMeta: checkEnv('PATH_TO_ORACLE_META'),
+    acoountSeed: checkEnv('GEAR_ACCOUNT_SEED'),
   },
   chainlink: {
     url: checkEnv('CL_URL'),
