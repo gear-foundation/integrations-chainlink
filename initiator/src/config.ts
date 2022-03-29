@@ -15,7 +15,7 @@ export default {
     oracle: checkEnv('ORACLE_ADDRESS'),
     gas: checkEnv('ORACLE_GAS_LIMIT'),
     pathToMeta: checkEnv('PATH_TO_ORACLE_META'),
-    acoountSeed: checkEnv('GEAR_ACCOUNT_SEED'),
+    accountSeed: checkEnv('GEAR_ACCOUNT_SEED'),
   },
   chainlink: {
     url: checkEnv('CL_URL'),

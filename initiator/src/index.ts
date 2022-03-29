@@ -14,7 +14,7 @@ const sleep = () => {
 
 const main = async () => {
   const oracle = new GearOracle(config.gear.oracle as Hex, readFileSync(config.gear.pathToMeta), config.gear.gas);
-  await oracle.init(config.gear.ws, config.gear.acoountSeed);
+  await oracle.init(config.gear.ws, config.gear.accountSeed);
   console.log(`🚀 App is running`);
   while (true) {
     const state = await oracle.readState();
