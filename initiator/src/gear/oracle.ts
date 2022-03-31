@@ -2,6 +2,7 @@ import { Metadata, GearApi, GearKeyring, Hex, getWasmMetadata } from '@gear-js/a
 import { BTreeMap } from '@polkadot/types-codec';
 import { IRequest, AccountAndRequestId, FullfillRequestData, OracleRequest } from '../interfaces';
 import { KeyringPair } from '@polkadot/keyring/types';
+import chalk from 'chalk';
 
 export class GearOracle {
   api: GearApi;
@@ -37,6 +38,8 @@ export class GearOracle {
       return null;
     }
     const result: IRequest[] = [];
+    console.log(chalk.cyan('Requests in oracle state'));
+    console.log(stateRequests.toHuman());
     stateRequests.forEach((value, key) => {
       result.push({ jobId: value.jobId.toString(), data: value.data.toString(), request_key: key.toString() });
     });
@@ -53,6 +56,8 @@ export class GearOracle {
       return result;
     };
     const payload = { FullfillRequests: fullfill() };
+    console.log(chalk.cyan('Send message to oracle contract'));
+    console.log(payload);
     try {
       this.api.message.submit({ destination: this.oracleAddress, gasLimit: this.gas, payload }, this.meta);
     } catch (error: any) {

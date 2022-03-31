@@ -1,15 +1,20 @@
 import axios from 'axios';
+import chalk from 'chalk';
 import config from '../config';
 import { FullfillRequestData, IMakeRequestResult, IRequest } from '../interfaces';
 
 export async function makeRequest({ jobId, data, request_key }: IRequest): Promise<IMakeRequestResult> {
-  const uri = `${config.chainlink.url}/v2/jobs/${jobId}/runs`;
+  const url = `${config.chainlink.url}/v2/jobs/${jobId}/runs`;
   const headers = {
     'Content-Type': 'application/json',
     'X-Chainlink-EA-AccessKey': config.chainlink.inAccessKey,
     'X-Chainlink-EA-Secret': config.chainlink.inSecret,
   };
-  const response = await axios.post(uri, JSON.parse(data), { headers });
+  console.log(chalk.green('Send request to chainlink node'));
+  console.log({ url, data });
+  const response = await axios.post(url, JSON.parse(data), { headers });
+  console.log(chalk.green('Received response from chainlink node'));
+  console.log({ data: response.data.data });
   return { request_key, data: response.data.data };
 }
 
