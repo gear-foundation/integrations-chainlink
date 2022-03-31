@@ -1,0 +1,9 @@
+{
+  "Request": {
+    "jobId": "be08b25d-2ac5-4842-90e7-bf8498109d3d",
+    "payment": 0,
+    "callback_address": "0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+    "requestId": 0,
+    "data": "{\"value\": 12}"
+  }
+}

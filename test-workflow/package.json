@@ -1,0 +1,12 @@
+{
+  "name": "test-workflow",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@gear-js/api": "^0.16.0",
+    "@polkadot/api": "^7.14.3",
+    "chalk": "4"
+  }
+}
